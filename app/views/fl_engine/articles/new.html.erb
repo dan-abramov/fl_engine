@@ -1,0 +1,8 @@
+<%= link_to t(:back), articles_path %>
+<br>
+<br>
+<%= simple_form_for @article do |f| %>
+  <%= f.input :title, label: 'Заголовок', input_html: { required: true, autofocus: true } %>
+  <%= f.input :text, label: 'Текст',      input_html: { required: true } %>
+  <%= f.submit %>
+<% end %>

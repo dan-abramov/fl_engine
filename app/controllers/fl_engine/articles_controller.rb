@@ -2,11 +2,11 @@ require_dependency "fl_engine/application_controller"
 
 module FlEngine
   class ArticlesController < ApplicationController
-    before_action :load_article, only: [:edit, :destoy, :show, :update]
+    before_action :load_article, only: [:show]
 
     def create
-      @article = Article.new(article_params)
-
+      @article = Article.new(article_params.merge({ postable_id: current_user.id,
+                                                    postable_type: current_user.class.name }))
       if @article.save
         redirect_to @article
       else
@@ -14,26 +14,11 @@ module FlEngine
       end
     end
 
-    def update
-      if @article.update(article_params)
-        redirect_to @article
-      else
-        render :edit
-      end
-    end
-
-    def destroy
-      @article.destroy
-      redirect_to fl_engine_articles_path
-    end
-
     def index
-      @articles = Article.all
+      @articles = current_user.articles
     end
 
     def show; end
-
-    def edit; end
 
     def new
       @article = Article.new
